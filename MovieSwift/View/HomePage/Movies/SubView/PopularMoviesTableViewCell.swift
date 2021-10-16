@@ -9,9 +9,13 @@ import UIKit
 
 class PopularMoviesTableViewCell: UITableViewCell {
 
+    private let util = Utils()
     lazy var popularMovieCell: UIView = UIView()
     lazy var popularMovieImage: UIImageView = UIImageView()
     lazy var popularMovieTitle: UILabel = UILabel()
+    lazy var popularMovieRating: CircularProgressView = CircularProgressView(frame: CGRect(x: 2.0, y: 2.0, width: 50.0, height: 50.0))
+    lazy var popularMovieReleaseDate: UILabel = UILabel()
+    lazy var popularMovieOverview: UILabel = UILabel()
 
     enum Identifier: String {
         case custom = "popularMoviesTableViewCell"
@@ -39,10 +43,11 @@ class PopularMoviesTableViewCell: UITableViewCell {
     private func makeImage(url: String) {
         popularMovieCell.addSubview(popularMovieImage)
         popularMovieImage.layer.masksToBounds = true
-        popularMovieImage.layer.cornerRadius = 60
+        popularMovieImage.layer.cornerRadius = 5
         popularMovieImage.af.setImage(withURL: URL(string: EndPoint.smallImagePath(url: url))!)
         popularMovieImage.snp.makeConstraints { (make) -> Void in
-            make.height.width.equalTo(120)
+            make.width.equalTo(120)
+            make.height.equalTo(150)
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(10)
         }
@@ -51,6 +56,8 @@ class PopularMoviesTableViewCell: UITableViewCell {
     private func makeTitle(title: String?) {
         popularMovieCell.addSubview(popularMovieTitle)
         popularMovieTitle.text = title
+        popularMovieTitle.textColor = .black
+        popularMovieTitle.font = popularMovieTitle.font.withSize(18)
         popularMovieTitle.numberOfLines = 0
         popularMovieTitle.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(popularMovieImage.snp.right).offset(10)
@@ -59,10 +66,47 @@ class PopularMoviesTableViewCell: UITableViewCell {
         }
     }
 
+    private func makeRating(rating: Double) {
+        popularMovieCell.addSubview(popularMovieRating)
+        popularMovieRating.setProgressWithAnimation(duration: 0.5, value: (Float(rating) / 10))
+        popularMovieRating.snp.makeConstraints { (make) -> Void in
+            make.width.height.equalTo(50)
+            make.top.equalTo(popularMovieTitle.snp.bottom).offset(10)
+            make.left.equalTo(popularMovieTitle.snp.left).offset(0)
+        }
+    }
+
+    private func makeReleaseDate(date: String) {
+        popularMovieCell.addSubview(popularMovieReleaseDate)
+        popularMovieReleaseDate.text = util.getStringToDate(date: date)
+        popularMovieReleaseDate.textAlignment = .center
+        popularMovieReleaseDate.snp.makeConstraints { (make) -> Void in
+            make.centerY.equalTo(popularMovieRating)
+            make.left.equalTo(popularMovieRating.snp.right).offset(10)
+        }
+    }
+    
+    private func makeOverview(overview:String){
+        popularMovieCell.addSubview(popularMovieOverview)
+        popularMovieOverview.text = overview
+        popularMovieOverview.textColor = .lightGray
+        popularMovieOverview.font = popularMovieOverview.font.withSize(14)
+        popularMovieOverview.numberOfLines = 0
+        popularMovieOverview.snp.makeConstraints { (make) -> Void in
+            make.left.equalTo(popularMovieTitle.snp.left).offset(0)
+            make.right.equalTo(popularMovieTitle.snp.right).offset(0)
+            make.top.equalTo(popularMovieRating.snp.bottom).offset(10)
+            make.bottom.equalTo(popularMovieImage.snp.bottom).offset(0)
+        }
+    }
+
     func saveModel(model: PopularMovieResults) {
         makeCell()
         makeImage(url: model.poster_path ?? "")
         makeTitle(title: model.title ?? "")
+        makeRating(rating: model.vote_average ?? 0.0)
+        makeReleaseDate(date: model.release_date ?? "")
+        makeOverview(overview: model.overview ?? "")
     }
 
 }

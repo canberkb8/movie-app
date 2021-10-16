@@ -35,7 +35,7 @@ final class MoviesViewController: UIViewController {
         tableView.dataSource = popularMoviesTableView
         popularMoviesTableView.delegate = self
         tableView.register(PopularMoviesTableViewCell.self, forCellReuseIdentifier: PopularMoviesTableViewCell.Identifier.custom.rawValue)
-        tableView.rowHeight = 150
+        tableView.rowHeight = 180
     }
 
     private func configure() {
