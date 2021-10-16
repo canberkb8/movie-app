@@ -25,6 +25,8 @@
 		4D446236271AF9C9001CD826 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D446235271AF9C9001CD826 /* MoviesViewController.swift */; };
 		4D9833CB271B045D0048CB3A /* PopularMoviesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9833CA271B045D0048CB3A /* PopularMoviesTableView.swift */; };
 		4D9833CE271B047A0048CB3A /* PopularMoviesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9833CD271B047A0048CB3A /* PopularMoviesTableViewCell.swift */; };
+		4D9833D2271B12080048CB3A /* LoadingDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9833D1271B12080048CB3A /* LoadingDialog.swift */; };
+		4D9833D6271B12610048CB3A /* loading-anim.json in Resources */ = {isa = PBXBuildFile; fileRef = 4D9833D5271B12610048CB3A /* loading-anim.json */; };
 		4D9E8E9B271AFA4A00DC4CE9 /* MoviesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E8E9A271AFA4A00DC4CE9 /* MoviesViewModel.swift */; };
 		4D9E8E9E271AFB1100DC4CE9 /* PopularMovieResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D9E8E9D271AFB1100DC4CE9 /* PopularMovieResponseModel.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +46,8 @@
 		4D446235271AF9C9001CD826 /* MoviesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		4D9833CA271B045D0048CB3A /* PopularMoviesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesTableView.swift; sourceTree = "<group>"; };
 		4D9833CD271B047A0048CB3A /* PopularMoviesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMoviesTableViewCell.swift; sourceTree = "<group>"; };
+		4D9833D1271B12080048CB3A /* LoadingDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDialog.swift; sourceTree = "<group>"; };
+		4D9833D5271B12610048CB3A /* loading-anim.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "loading-anim.json"; sourceTree = "<group>"; };
 		4D9E8E9A271AFA4A00DC4CE9 /* MoviesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesViewModel.swift; sourceTree = "<group>"; };
 		4D9E8E9D271AFB1100DC4CE9 /* PopularMovieResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMovieResponseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,10 +89,11 @@
 			isa = PBXGroup;
 			children = (
 				4D446202271AEAF9001CD826 /* Core */,
-				4D44622A271AF7E2001CD826 /* 3rdPartFiles */,
 				4D446204271AF040001CD826 /* Data */,
 				4D446228271AF7CB001CD826 /* View */,
+				4D44622A271AF7E2001CD826 /* 3rdPartFiles */,
 				4D44622C271AF80A001CD826 /* Raw */,
+				4D9833D0271B11E00048CB3A /* Components */,
 				4D446229271AF7CF001CD826 /* Utils */,
 				4D4461FA271AEADF001CD826 /* Info.plist */,
 			);
@@ -176,6 +181,7 @@
 		4D44622C271AF80A001CD826 /* Raw */ = {
 			isa = PBXGroup;
 			children = (
+				4D9833D5271B12610048CB3A /* loading-anim.json */,
 			);
 			path = Raw;
 			sourceTree = "<group>";
@@ -213,6 +219,14 @@
 				4D9833CD271B047A0048CB3A /* PopularMoviesTableViewCell.swift */,
 			);
 			path = SubView;
+			sourceTree = "<group>";
+		};
+		4D9833D0271B11E00048CB3A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				4D9833D1271B12080048CB3A /* LoadingDialog.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D4461F9271AEADF001CD826 /* LaunchScreen.storyboard in Resources */,
+				4D9833D6271B12610048CB3A /* loading-anim.json in Resources */,
 				4D4461F6271AEADF001CD826 /* Assets.xcassets in Resources */,
 				4D4461F4271AEADE001CD826 /* Main.storyboard in Resources */,
 			);
@@ -305,6 +320,7 @@
 				4D4461F1271AEADE001CD826 /* ViewController.swift in Sources */,
 				4D4461ED271AEADE001CD826 /* AppDelegate.swift in Sources */,
 				4D9833CE271B047A0048CB3A /* PopularMoviesTableViewCell.swift in Sources */,
+				4D9833D2271B12080048CB3A /* LoadingDialog.swift in Sources */,
 				4D44620E271AF0C5001CD826 /* EndPoint.swift in Sources */,
 				4D4461EF271AEADE001CD826 /* SceneDelegate.swift in Sources */,
 				4D446236271AF9C9001CD826 /* MoviesViewController.swift in Sources */,

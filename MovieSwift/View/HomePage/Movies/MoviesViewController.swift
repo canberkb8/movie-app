@@ -15,9 +15,10 @@ protocol MoviesViewOutPut {
 final class MoviesViewController: UIViewController {
 
     private var moviesViewModel: IMoviesViewModel = MoviesViewModel()
-
-    lazy var tableView = UITableView()
     private let popularMoviesTableView: PopularMoviesTableView = PopularMoviesTableView()
+
+    lazy var loadingDialog = LoadingDialog()
+    lazy var tableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,9 +63,11 @@ extension MoviesViewController: MoviesViewOutPut {
 
     func changeLoading(isLoad: Bool) {
         if isLoad {
-            print("loading anim play")
+            loadingDialog.playAnimation()
+            view.addSubview(loadingDialog)
         } else {
-            print("loading anim stop")
+            loadingDialog.stopAnimation()
+            loadingDialog.removeFromSuperview()
         }
     }
 }
