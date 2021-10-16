@@ -12,9 +12,12 @@ protocol MoviesViewOutPut {
     func popularMovieData(isSuccess: Bool, error: Int?, data: PopularMovieResponseModel?)
 }
 
-class MoviesViewController: UIViewController {
+final class MoviesViewController: UIViewController {
 
     private var moviesViewModel: IMoviesViewModel = MoviesViewModel()
+
+    lazy var tableView = UITableView()
+    private let popularMoviesTableView: PopularMoviesTableView = PopularMoviesTableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +25,21 @@ class MoviesViewController: UIViewController {
         moviesViewModel.setDelegate(output: self)
         moviesViewModel.getPopularMovies()
 
+        initTableViewDelegate()
         configure()
+    }
+
+    private func initTableViewDelegate() {
+        tableView.delegate = popularMoviesTableView
+        tableView.dataSource = popularMoviesTableView
+        popularMoviesTableView.delegate = self
+        tableView.register(PopularMoviesTableViewCell.self, forCellReuseIdentifier: PopularMoviesTableViewCell.Identifier.custom.rawValue)
+        tableView.rowHeight = 150
     }
 
     private func configure() {
         drawDesign()
+        makePopularMoviesTableView()
     }
 
     private func drawDesign() {
@@ -40,7 +53,8 @@ class MoviesViewController: UIViewController {
 extension MoviesViewController: MoviesViewOutPut {
     func popularMovieData(isSuccess: Bool, error: Int? = nil, data: PopularMovieResponseModel? = nil) {
         if isSuccess {
-            print(data!)
+            self.popularMoviesTableView.update(newItemList: (data?.results) ?? [])
+            self.tableView.reloadData()
         } else {
             print(error!)
         }
@@ -51,6 +65,26 @@ extension MoviesViewController: MoviesViewOutPut {
             print("loading anim play")
         } else {
             print("loading anim stop")
+        }
+    }
+}
+
+extension MoviesViewController: PopularMoviesTableViewOutput {
+    func onSelected(item: PopularMovieResults) {
+        print(item.title ?? "")
+    }
+}
+
+extension MoviesViewController {
+    func makePopularMoviesTableView() {
+        view.addSubview(tableView)
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
+        tableView.snp.makeConstraints { (make) -> Void in
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(0)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
+            make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(0)
+            make.right.equalTo(view.safeAreaLayoutGuide.snp.right).offset(0)
         }
     }
 }

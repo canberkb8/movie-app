@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import AlamofireImage
 
 class ViewController: UIViewController {
 
