@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "Awesome",
+        "repositoryURL": "https://github.com/LiveUI/Awesome",
+        "state": {
+          "branch": null,
+          "revision": "dd685ce6302fa800069753ff23eb6909322f5ea0",
+          "version": "2.3.0"
+        }
+      },
+      {
         "package": "Lottie",
         "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
         "state": {

@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import Awesome
 
 class PopularMoviesTableViewCell: UITableViewCell {
 
     private let util = Utils()
     lazy var popularMovieCell: UIView = UIView()
     lazy var popularMovieImage: UIImageView = UIImageView()
+    lazy var popularIconRigthArrow: UIImageView = UIImageView()
     lazy var popularMovieTitle: UILabel = UILabel()
     lazy var popularMovieRating: CircularProgressView = CircularProgressView(frame: CGRect(x: 2.0, y: 2.0, width: 50.0, height: 50.0))
     lazy var popularMovieReleaseDate: UILabel = UILabel()
@@ -53,6 +55,17 @@ class PopularMoviesTableViewCell: UITableViewCell {
         }
     }
 
+    private func makeIconRigthArrow() {
+        popularMovieCell.addSubview(popularIconRigthArrow)
+        popularIconRigthArrow.sizeToFit()
+        popularIconRigthArrow.image = Awesome.Solid.angleRight.asImage(size: CGSize(width: 25, height: 25), color: .black, backgroundColor: .white)
+        popularIconRigthArrow.snp.makeConstraints { (make) -> Void in
+            make.height.width.equalTo(25)
+            make.right.equalToSuperview().offset(-10)
+            make.top.bottom.equalToSuperview().offset(0)
+        }
+    }
+
     private func makeTitle(title: String?) {
         popularMovieCell.addSubview(popularMovieTitle)
         popularMovieTitle.text = title
@@ -79,14 +92,15 @@ class PopularMoviesTableViewCell: UITableViewCell {
     private func makeReleaseDate(date: String) {
         popularMovieCell.addSubview(popularMovieReleaseDate)
         popularMovieReleaseDate.text = util.getStringToDate(date: date)
-        popularMovieReleaseDate.textAlignment = .center
+        popularMovieReleaseDate.textAlignment = .left
         popularMovieReleaseDate.snp.makeConstraints { (make) -> Void in
             make.centerY.equalTo(popularMovieRating)
             make.left.equalTo(popularMovieRating.snp.right).offset(10)
+            make.right.equalToSuperview().offset(0)
         }
     }
-    
-    private func makeOverview(overview:String){
+
+    private func makeOverview(overview: String) {
         popularMovieCell.addSubview(popularMovieOverview)
         popularMovieOverview.text = overview
         popularMovieOverview.textColor = .lightGray
@@ -94,7 +108,7 @@ class PopularMoviesTableViewCell: UITableViewCell {
         popularMovieOverview.numberOfLines = 0
         popularMovieOverview.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(popularMovieTitle.snp.left).offset(0)
-            make.right.equalTo(popularMovieTitle.snp.right).offset(0)
+            make.right.equalToSuperview().offset(-10)
             make.top.equalTo(popularMovieRating.snp.bottom).offset(10)
             make.bottom.equalTo(popularMovieImage.snp.bottom).offset(0)
         }
@@ -103,6 +117,7 @@ class PopularMoviesTableViewCell: UITableViewCell {
     func saveModel(model: PopularMovieResults) {
         makeCell()
         makeImage(url: model.poster_path ?? "")
+        //makeIconRigthArrow()
         makeTitle(title: model.title ?? "")
         makeRating(rating: model.vote_average ?? 0.0)
         makeReleaseDate(date: model.release_date ?? "")

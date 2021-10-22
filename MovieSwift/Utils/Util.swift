@@ -9,6 +9,14 @@ import UIKit
 
 class Utils {
 
+    public var screenWidth: CGFloat {
+        return UIScreen.main.bounds.width
+    }
+
+    public var screenHeight: CGFloat {
+        return UIScreen.main.bounds.height
+    }
+
     func getAppversionNumber() -> String? {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         return appVersion
@@ -43,5 +51,13 @@ class Utils {
         formatter.dateFormat = "yyyy"
         let year = formatter.string(from: date)
         return day + " " + month + " " + year
+    }
+    
+    func getStringToYear(date: String) -> String? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let date = formatter.date(from: date)!
+        formatter.dateFormat = "yyyy"
+        return formatter.string(from: date)
     }
 }

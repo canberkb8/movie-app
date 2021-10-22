@@ -6,14 +6,16 @@
 //
 
 import UIKit
+import Awesome
 
 class NavigationViewController: UITabBarController {
-
+    
+    let MoviesVC = MoviesViewController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let MoviesVC = MoviesViewController()
-        //MoviesVC.tabBarItem.image = UIImage.fontAwesomeIcon(.Briefcase)
+        MoviesVC.tabBarItem.image = Awesome.Solid.film.asImage(size: 40.0)
         MoviesVC.title = "Movies"
 
         let controllers: [UIViewController] = [MoviesVC]

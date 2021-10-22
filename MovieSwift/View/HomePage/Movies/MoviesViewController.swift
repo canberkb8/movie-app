@@ -24,10 +24,12 @@ final class MoviesViewController: UIViewController {
         super.viewDidLoad()
 
         moviesViewModel.setDelegate(output: self)
-        moviesViewModel.getPopularMovies()
-
         initTableViewDelegate()
         configure()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        moviesViewModel.getPopularMovies()
     }
 
     private func initTableViewDelegate() {
@@ -74,7 +76,10 @@ extension MoviesViewController: MoviesViewOutPut {
 
 extension MoviesViewController: PopularMoviesTableViewOutput {
     func onSelected(item: PopularMovieResults) {
-        print(item.title ?? "")
+        let movieDetailVC = MovieDetailViewController()
+        movieDetailVC.movieDetailID = item.id!
+        movieDetailVC.modalPresentationStyle = .fullScreen
+        present(movieDetailVC, animated: true, completion: nil)
     }
 }
 
@@ -84,10 +89,7 @@ extension MoviesViewController {
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.snp.makeConstraints { (make) -> Void in
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(0)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
-            make.left.equalTo(view.safeAreaLayoutGuide.snp.left).offset(0)
-            make.right.equalTo(view.safeAreaLayoutGuide.snp.right).offset(0)
+            make.top.left.right.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
