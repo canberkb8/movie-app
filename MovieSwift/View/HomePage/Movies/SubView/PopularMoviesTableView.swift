@@ -7,17 +7,17 @@
 import UIKit
 
 protocol PopularMoviesTableViewProtocol {
-    func update(newItemList: [PopularMovieResults], newPage: Bool)
+    func update(newItemList: [MovieResults], newPage: Bool)
 }
 
 protocol PopularMoviesTableViewOutput: class {
-    func onSelected(item: PopularMovieResults)
+    func onSelected(item: MovieResults)
     func reloadNextPage()
 }
 
 final class PopularMoviesTableView: NSObject {
 
-    private lazy var itemList: [PopularMovieResults] = []
+    private lazy var itemList: [MovieResults] = []
 
     ///TableView Output Delegate
     weak var delegate: PopularMoviesTableViewOutput?
@@ -51,7 +51,7 @@ final class PopularMoviesTableView: NSObject {
 
 extension PopularMoviesTableView: UITableViewDelegate, UITableViewDataSource { }
 extension PopularMoviesTableView: PopularMoviesTableViewProtocol {
-    func update(newItemList: [PopularMovieResults], newPage: Bool) {
+    func update(newItemList: [MovieResults], newPage: Bool) {
         if newPage{
             self.itemList.append(contentsOf: newItemList)
         }else{

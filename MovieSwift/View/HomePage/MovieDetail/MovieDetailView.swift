@@ -45,6 +45,7 @@ extension MovieDetailView {
         self.addSubview(bannerImageView)
         bannerImageView.af.setImage(withURL: URL(string: EndPoint.originalImagePath(url: movieDetailResponseModel?.backdrop_path ?? ""))!)
         bannerImageView.addBlur()
+        bannerImageView.sizeToFit()
         bannerImageView.snp.makeConstraints { (make) -> Void in
             make.height.equalTo(Utils().screenHeight / 2)
             make.top.left.equalToSuperview()

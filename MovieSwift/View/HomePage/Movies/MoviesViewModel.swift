@@ -11,19 +11,18 @@ import SwiftyJSON
 
 protocol IMoviesViewModel {
 
-    var popularMoviesData: PopularMovieResponseModel? { get set }
+    var moviesData: MovieResponseModel? { get set }
     var moviesViewOutPut: MoviesViewOutPut? { get }
 
     func changeLoading()
     func setDelegate(output: MoviesViewOutPut)
-    func getPopularMovies(page: Int)
-    func getPopularMoviesNextPage(page: Int)
+    func getMovie(endPoint: String)
+    func getMovieNextPage(endPoint: String)
 
 }
 
 final class MoviesViewModel: IMoviesViewModel {
-    
-    var popularMoviesData: PopularMovieResponseModel? = nil
+    var moviesData: MovieResponseModel? = nil
     private var isLoading = false
     var moviesViewOutPut: MoviesViewOutPut?
 
@@ -36,30 +35,30 @@ final class MoviesViewModel: IMoviesViewModel {
         moviesViewOutPut = output
     }
 
-    func getPopularMovies(page: Int) {
+    func getMovie(endPoint: String) {
         changeLoading()
-        ApiClient.GET(EndPoint.moviePopularPath(page: String(page)),
+        ApiClient.GET(endPoint,
             success: { [weak self] data in
-                let popularMoviesResponse = Mapper<PopularMovieResponseModel>().map(JSONString: data.rawString()!)
-                self?.popularMoviesData = popularMoviesResponse
-                self?.moviesViewOutPut?.popularMovieData(isSuccess: true, error: nil, data: self?.popularMoviesData)
+                let moviesResponse = Mapper<MovieResponseModel>().map(JSONString: data.rawString()!)
+                self?.moviesData = moviesResponse
+                self?.moviesViewOutPut?.movieData(isSuccess: true, error: nil, data: self?.moviesData)
             }, done: {
                 self.changeLoading()
             }, fail: { error in
-                self.moviesViewOutPut?.popularMovieData(isSuccess: false, error: error, data: nil)
+                self.moviesViewOutPut?.movieData(isSuccess: false, error: error, data: nil)
             }
         )
     }
-    
-    func getPopularMoviesNextPage(page: Int) {
-        ApiClient.GET(EndPoint.moviePopularPath(page: String(page)),
+
+    func getMovieNextPage(endPoint: String) {
+        ApiClient.GET(endPoint,
             success: { [weak self] data in
-                let popularMoviesResponse = Mapper<PopularMovieResponseModel>().map(JSONString: data.rawString()!)
-                self?.popularMoviesData = popularMoviesResponse
-                self?.moviesViewOutPut?.popularMovieData(isSuccess: true, error: nil, data: self?.popularMoviesData)
-            }, done: {},
+                let moviesResponse = Mapper<MovieResponseModel>().map(JSONString: data.rawString()!)
+                self?.moviesData = moviesResponse
+                self?.moviesViewOutPut?.movieData(isSuccess: true, error: nil, data: self?.moviesData)
+            }, done: { },
             fail: { error in
-                self.moviesViewOutPut?.popularMovieData(isSuccess: false, error: error, data: nil)
+                self.moviesViewOutPut?.movieData(isSuccess: false, error: error, data: nil)
             }
         )
     }

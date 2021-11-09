@@ -114,7 +114,7 @@ class PopularMoviesTableViewCell: UITableViewCell {
         }
     }
 
-    func saveModel(model: PopularMovieResults) {
+    func saveModel(model: MovieResults) {
         makeCell()
         makeImage(url: model.poster_path ?? "")
         //makeIconRigthArrow()

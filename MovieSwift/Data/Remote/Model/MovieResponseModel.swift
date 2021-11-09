@@ -1,5 +1,5 @@
 //
-//  PopularMovieResponseModel.swift
+//  MovieResponseModel.swift
 //  MovieSwift
 //
 //  Created by Canberk Bibican on 16.10.2021.
@@ -8,9 +8,9 @@
 import Foundation
 import ObjectMapper
 
-struct PopularMovieResponseModel: Mappable {
+struct MovieResponseModel: Mappable {
     var page: Int?
-    var results: [PopularMovieResults]?
+    var results: [MovieResults]?
     var total_pages: Int?
     var total_results: Int?
 
@@ -28,7 +28,7 @@ struct PopularMovieResponseModel: Mappable {
 
 }
 
-struct PopularMovieResults: Mappable {
+struct MovieResults: Mappable {
     var adult: Bool?
     var backdrop_path: String?
     var genre_ids: [Int]?
