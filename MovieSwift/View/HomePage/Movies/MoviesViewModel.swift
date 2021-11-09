@@ -16,7 +16,8 @@ protocol IMoviesViewModel {
 
     func changeLoading()
     func setDelegate(output: MoviesViewOutPut)
-    func getPopularMovies()
+    func getPopularMovies(page: Int)
+    func getPopularMoviesNextPage(page: Int)
 
 }
 
@@ -35,9 +36,9 @@ final class MoviesViewModel: IMoviesViewModel {
         moviesViewOutPut = output
     }
 
-    func getPopularMovies() {
+    func getPopularMovies(page: Int) {
         changeLoading()
-        ApiClient.GET(EndPoint.moviePopularPath(),
+        ApiClient.GET(EndPoint.moviePopularPath(page: String(page)),
             success: { [weak self] data in
                 let popularMoviesResponse = Mapper<PopularMovieResponseModel>().map(JSONString: data.rawString()!)
                 self?.popularMoviesData = popularMoviesResponse
@@ -45,6 +46,19 @@ final class MoviesViewModel: IMoviesViewModel {
             }, done: {
                 self.changeLoading()
             }, fail: { error in
+                self.moviesViewOutPut?.popularMovieData(isSuccess: false, error: error, data: nil)
+            }
+        )
+    }
+    
+    func getPopularMoviesNextPage(page: Int) {
+        ApiClient.GET(EndPoint.moviePopularPath(page: String(page)),
+            success: { [weak self] data in
+                let popularMoviesResponse = Mapper<PopularMovieResponseModel>().map(JSONString: data.rawString()!)
+                self?.popularMoviesData = popularMoviesResponse
+                self?.moviesViewOutPut?.popularMovieData(isSuccess: true, error: nil, data: self?.popularMoviesData)
+            }, done: {},
+            fail: { error in
                 self.moviesViewOutPut?.popularMovieData(isSuccess: false, error: error, data: nil)
             }
         )

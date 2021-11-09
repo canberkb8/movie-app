@@ -14,7 +14,7 @@ enum EndPoint: String {
     case IMAGE_ORIGINAL = "https://image.tmdb.org/t/p/original"
     
     case MOVIE = "movie"
-    case MOVIE_POPULAR = "movie/popular"
+    case MOVIE_POPULAR = "movie/popular?page="
 
     static func smallImagePath(url:String) -> String{
         return "\(IMAGE_SMALL.rawValue)\(url)"
@@ -28,8 +28,8 @@ enum EndPoint: String {
     static func originalImagePath(url:String) -> String{
         return "\(IMAGE_ORIGINAL.rawValue)\(url)"
     }
-    static func moviePopularPath() -> String {
-        return "\(BASE_URL.rawValue)\(MOVIE_POPULAR.rawValue)"
+    static func moviePopularPath(page: String) -> String {
+        return "\(BASE_URL.rawValue)\(MOVIE_POPULAR.rawValue)\(page)"
     }
     static func movieDetailPath(id:String) -> String{
         return "\(BASE_URL.rawValue)\(MOVIE.rawValue)\("/")\(id)"

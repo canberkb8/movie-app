@@ -9,16 +9,20 @@ import UIKit
 import Awesome
 
 class NavigationViewController: UITabBarController {
-    
-    let MoviesVC = MoviesViewController()
-    
+
+    let moviesVC = MoviesViewController()
+    let randomMovieVC = RandomMovieViewController()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        MoviesVC.tabBarItem.image = Awesome.Solid.film.asImage(size: 40.0)
-        MoviesVC.title = "Movies"
+        moviesVC.tabBarItem.image = AwesomePro.Light.film.asImage(size: 40.0)
+        moviesVC.title = "Movies"
 
-        let controllers: [UIViewController] = [MoviesVC]
+        randomMovieVC.tabBarItem.image = AwesomePro.Light.popcorn.asImage(size: 40.0)
+        randomMovieVC.title = "Suggestion"
+
+        let controllers: [UIViewController] = [moviesVC, randomMovieVC]
 
         viewControllers = controllers
         self.selectedIndex = 0

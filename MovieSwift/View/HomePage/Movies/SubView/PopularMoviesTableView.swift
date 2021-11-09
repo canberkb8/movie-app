@@ -7,11 +7,12 @@
 import UIKit
 
 protocol PopularMoviesTableViewProtocol {
-    func update(newItemList: [PopularMovieResults])
+    func update(newItemList: [PopularMovieResults], newPage: Bool)
 }
 
 protocol PopularMoviesTableViewOutput: class {
     func onSelected(item: PopularMovieResults)
+    func reloadNextPage()
 }
 
 final class PopularMoviesTableView: NSObject {
@@ -38,11 +39,24 @@ final class PopularMoviesTableView: NSObject {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.onSelected(item: itemList[indexPath.row])
     }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // need to pass your indexpath then it showing your indicator at bottom
+        tableView.addLoading(indexPath) {
+            self.delegate?.reloadNextPage()
+            tableView.stopLoading()
+        }
+    }
 }
 
 extension PopularMoviesTableView: UITableViewDelegate, UITableViewDataSource { }
 extension PopularMoviesTableView: PopularMoviesTableViewProtocol {
-    func update(newItemList: [PopularMovieResults]) {
-        self.itemList = newItemList
+    func update(newItemList: [PopularMovieResults], newPage: Bool) {
+        if newPage{
+            self.itemList.append(contentsOf: newItemList)
+        }else{
+            self.itemList = newItemList
+        }
+        
     }
 }

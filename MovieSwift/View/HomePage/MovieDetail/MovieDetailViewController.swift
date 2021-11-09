@@ -6,29 +6,35 @@
 //
 
 import UIKit
+import Awesome
 
 protocol MovieDetailViewOutPut {
     func changeLoading(isLoad: Bool)
     func movieDetailData(isSuccess: Bool, error: Int?, data: MovieDetailResponseModel?)
 }
 
-class MovieDetailViewController: UIViewController {
-    
+final class MovieDetailViewController: UIViewController, UINavigationBarDelegate, UINavigationControllerDelegate {
+
     var movieDetailID = 0
     private var movieDetailViewModel: IMovieDetailViewModel = MovieDetailViewModel()
     lazy var loadingDialog = LoadingDialog()
     lazy var movieDetailView = MovieDetailView()
-    
+    lazy var backButton: UIButton = UIButton()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         movieDetailViewModel.setDelegate(output: self)
         movieDetailViewModel.getMovieDetail(id: movieDetailID)
         configure()
     }
-    
+
+    @objc func back() {
+        dismiss(animated: true, completion: nil)
+    }
+
     private func configure() {
         drawDesign()
+        makeTabBar()
         makeMoviewDetailView()
     }
 
@@ -50,7 +56,7 @@ extension MovieDetailViewController: MovieDetailViewOutPut {
             loadingDialog.removeFromSuperview()
         }
     }
-    
+
     func movieDetailData(isSuccess: Bool, error: Int?, data: MovieDetailResponseModel?) {
         if isSuccess {
             movieDetailView.setupView(model: movieDetailViewModel.movieDetailData!)
@@ -58,11 +64,22 @@ extension MovieDetailViewController: MovieDetailViewOutPut {
             print(error!)
         }
     }
-    
+
 }
 
-extension MovieDetailViewController{
-    func makeMoviewDetailView(){
+extension MovieDetailViewController {
+
+    func makeTabBar() {
+        self.navigationItem.hidesBackButton = true
+        let button = UIButton(type: .system)
+        button.setImage(AwesomePro.Light.angleLeft.asImage(size: 35), for: .normal)
+        button.setTitle("Back", for: .normal)
+        button.sizeToFit()
+        button.addTarget(self, action: #selector(back), for: .touchUpInside)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+    }
+
+    func makeMoviewDetailView() {
         view.addSubview(movieDetailView)
         movieDetailView.snp.makeConstraints { (make) -> Void in
             make.top.bottom.left.right.equalToSuperview()

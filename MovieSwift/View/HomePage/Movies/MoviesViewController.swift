@@ -16,6 +16,7 @@ final class MoviesViewController: UIViewController {
 
     private var moviesViewModel: IMoviesViewModel = MoviesViewModel()
     private let popularMoviesTableView: PopularMoviesTableView = PopularMoviesTableView()
+    private var pageCounter = 1
 
     lazy var loadingDialog = LoadingDialog()
     lazy var tableView = UITableView()
@@ -27,9 +28,9 @@ final class MoviesViewController: UIViewController {
         initTableViewDelegate()
         configure()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
-        moviesViewModel.getPopularMovies()
+        moviesViewModel.getPopularMovies(page: pageCounter)
     }
 
     private func initTableViewDelegate() {
@@ -56,7 +57,11 @@ final class MoviesViewController: UIViewController {
 extension MoviesViewController: MoviesViewOutPut {
     func popularMovieData(isSuccess: Bool, error: Int? = nil, data: PopularMovieResponseModel? = nil) {
         if isSuccess {
-            self.popularMoviesTableView.update(newItemList: (data?.results) ?? [])
+            if pageCounter == 1 {
+                self.popularMoviesTableView.update(newItemList: (data?.results) ?? [], newPage: false)
+            }else{
+                self.popularMoviesTableView.update(newItemList: (data?.results) ?? [], newPage: true)
+            }
             self.tableView.reloadData()
         } else {
             print(error!)
@@ -75,11 +80,17 @@ extension MoviesViewController: MoviesViewOutPut {
 }
 
 extension MoviesViewController: PopularMoviesTableViewOutput {
+    func reloadNextPage() {
+        pageCounter += 1
+        moviesViewModel.getPopularMoviesNextPage(page: pageCounter)
+    }
+    
     func onSelected(item: PopularMovieResults) {
         let movieDetailVC = MovieDetailViewController()
         movieDetailVC.movieDetailID = item.id!
-        movieDetailVC.modalPresentationStyle = .fullScreen
-        present(movieDetailVC, animated: true, completion: nil)
+        let movieDetailNavigationController = UINavigationController(rootViewController: movieDetailVC)
+        movieDetailNavigationController.modalPresentationStyle = .fullScreen
+        present(movieDetailNavigationController, animated: true, completion: nil)
     }
 }
 

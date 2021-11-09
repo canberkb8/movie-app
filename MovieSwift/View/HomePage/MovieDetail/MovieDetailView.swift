@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import AlamofireImage
+import Awesome
 
 class MovieDetailView: UIView {
 
@@ -35,7 +36,6 @@ class MovieDetailView: UIView {
         makeBanner()
         makeTitle()
         makeSubTitle()
-        makeBudget()
         makeGenres()
     }
 }
@@ -79,35 +79,43 @@ extension MovieDetailView {
         }
     }
 
-    func makeBudget() {
-        bannerImageView.addSubview(budget)
-        let budgetText = "Budget : " + String(movieDetailResponseModel?.budget ?? 0) + "$"
-        let revenue = "Revenue : " + String(movieDetailResponseModel?.revenue ?? 0) + "$"
-        budget.text = budgetText + " • " + revenue
-        budget.textColor = .white
-        budget.snp.makeConstraints { (make) -> Void in
+    func makeGenres() {
+        bannerImageView.addSubview(genres)
+        genres.isHidden = false
+        genres.spacing = 5
+        genres.distribution = .fillProportionally
+        genres.alignment = .center
+        genres.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(subTitle.snp.left).offset(0)
             make.top.equalTo(subTitle.snp.bottom).offset(5)
             make.right.equalToSuperview().offset(-10)
         }
-    }
-    func makeGenres() {
-        bannerImageView.addSubview(genres)
-        genres.isHidden = false
-        genres.spacing = 10
-        genres.distribution = .fillProportionally
-        genres.alignment = .center
-        genres.snp.makeConstraints { (make) -> Void in
-            make.left.equalTo(budget.snp.left).offset(0)
-            make.top.equalTo(budget.snp.bottom).offset(5)
-            make.right.equalToSuperview().offset(-10)
-        }
         for genre in movieDetailResponseModel?.genres ?? [] {
-            let label = UILabel()
-            label.text = genre.name
-            label.textColor = .white
-            label.backgroundColor = .gray
-            genres.addArrangedSubview(label)
+            let genreView = UIView()
+            genreView.layer.cornerRadius = 15
+            genreView.layer.masksToBounds = true
+            genreView.backgroundColor = .black
+            genreView.snp.makeConstraints { (make) in
+                make.height.equalTo(30)
+            }
+
+            let genreLabel = PaddingLabel(withInsets: 16, 16, 16, 16)
+            genreView.addSubview(genreLabel)
+            genreLabel.text = genre.name
+            genreLabel.textColor = .white
+            genreLabel.font = genreLabel.font.withSize(14)
+            genreLabel.snp.makeConstraints { (make) in
+                make.left.centerY.equalToSuperview()
+            }
+
+            let genreIcon = UIImageView()
+            genreView.addSubview(genreIcon)
+            genreIcon.image = AwesomePro.Light.angleRight.asImage(size: 30, color: .white)
+            genreIcon.snp.makeConstraints { (make) in
+                make.centerY.equalToSuperview()
+                make.left.equalTo(genreLabel.snp.right)
+            }
+            genres.addArrangedSubview(genreView)
         }
     }
 }
