@@ -39,17 +39,17 @@ class Utils {
         return alert
     }
 
-    func getStringToDate(date: String) -> String? {
+    func getStringToDate(date: String?) -> String? {
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        let date = formatter.date(from: date)!
+        let dateFormatter = formatter.date(from: date ?? "" != "" ? date! : "0001-01-01")!
         formatter.dateFormat = "dd"
-        let day = formatter.string(from: date)
+        let day = formatter.string(from: dateFormatter)
         formatter.dateFormat = "MM"
-        let month = months[Int(formatter.string(from: date))! - 1]
+        let month = months[Int(formatter.string(from: dateFormatter))! - 1]
         formatter.dateFormat = "yyyy"
-        let year = formatter.string(from: date)
+        let year = formatter.string(from: dateFormatter)
         return day + " " + month + " " + year
     }
     

@@ -12,7 +12,7 @@ extension UITableView {
     func indicatorView() -> UIActivityIndicatorView{
         var activityIndicatorView = UIActivityIndicatorView()
         if self.tableFooterView == nil {
-            let indicatorFrame = CGRect(x: 0, y: 0, width: self.bounds.width, height: 80)
+            let indicatorFrame = CGRect(x: 0, y: 0, width: self.bounds.width, height: 100)
             activityIndicatorView = UIActivityIndicatorView(frame: indicatorFrame)
             activityIndicatorView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin]
             

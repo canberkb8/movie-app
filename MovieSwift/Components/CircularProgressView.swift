@@ -23,21 +23,23 @@ class CircularProgressView: UIView {
         createCircularPath()
     }
 
-    var progressText: String = "0.0" {
+    var progressWitdh: CGFloat = 8.0 {
         didSet {
-            progressTextLabel.text = progressText
+            trackLayer.lineWidth = progressWitdh
+            progressLayer.lineWidth = progressWitdh
+        }
+    }
+
+    var progressTextColor = UIColor.white {
+        didSet {
+            progressTextLabel.textColor = progressTextColor
         }
     }
 
     var progressColor = UIColor.white {
         didSet {
             progressLayer.strokeColor = progressColor.cgColor
-        }
-    }
-
-    var trackColor = UIColor.white {
-        didSet {
-            trackLayer.strokeColor = trackColor.cgColor
+            progressTextLabel.textColor = progressColor
         }
     }
 
@@ -45,22 +47,26 @@ class CircularProgressView: UIView {
         self.backgroundColor = UIColor.clear
         self.layer.cornerRadius = self.frame.size.width / 2
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2, y: frame.size.height / 2), radius: (frame.size.width - 1.5) / 2, startAngle: CGFloat(-0.5 * .pi), endAngle: CGFloat(1.5 * .pi), clockwise: true)
+        createTrackLayer(circlePath: circlePath)
+        createProgressLayer(circlePath: circlePath)
+        createCircularText()
+    }
+
+    fileprivate func createTrackLayer(circlePath: UIBezierPath) {
         trackLayer.path = circlePath.cgPath
         trackLayer.fillColor = UIColor.clear.cgColor
-        trackLayer.strokeColor = trackColor.cgColor
-        trackLayer.lineWidth = 4.0
+        trackLayer.strokeColor = UIColor.systemGray6.cgColor
         trackLayer.strokeEnd = 1.0
         layer.addSublayer(trackLayer)
+    }
 
+    fileprivate func createProgressLayer(circlePath: UIBezierPath) {
         progressLayer.path = circlePath.cgPath
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeColor = progressColor.cgColor
-        progressLayer.lineWidth = 4.0
         progressLayer.strokeEnd = 0.0
         progressLayer.lineCap = .round
         layer.addSublayer(progressLayer)
-        
-        createCircularText()
     }
 
     fileprivate func createCircularText() {
@@ -76,10 +82,7 @@ class CircularProgressView: UIView {
         animation.fromValue = 0
         animation.toValue = value
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        progressText = String(value * 10).maxLength(length: 3)
-        progressTextLabel.textColor = getRatingColor(value: value)
-        trackColor = .white
-        progressColor = getRatingColor(value: value)
+        progressTextLabel.text = String(value * 10).maxLength(length: 3)
         progressLayer.strokeEnd = CGFloat(value)
         progressLayer.add(animation, forKey: "animateprogress")
     }
